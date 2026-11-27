@@ -1,4 +1,4 @@
-local VERSION_TEXT = "1.5.3";
+local VERSION_TEXT = "1.6.0";
 
 
 local addonName, addon = ...;
@@ -83,6 +83,15 @@ local DefaultValues = {
     --Other addons: Spoken (the folders in SupportedAddons are copied into Interface\AddOns, see Code\SpokenSupport.lua)
     SpokenButtons = false,                      --Spoken's Play and Skip buttons on the quest window and the book view
 
+    --Audio fading (see Code\Utility\AudioFade.lua). Not in retail
+    EnableAudioFading = false,                  --Lower the game volumes while the dialogue or a readable is open
+        AudioFade_SoundVolume = -1,             --0..100 in steps of 5; -1 not chosen: the channel keeps the game's volume
+        AudioFade_SoundDuration = 0.5,          --Seconds each way, 0..3 in steps of 0.5 (0.5 is Spoken's default)
+        AudioFade_MusicVolume = -1,
+        AudioFade_MusicDuration = 0.5,
+        AudioFade_AmbienceVolume = -1,
+        AudioFade_AmbienceDuration = 0.5,
+
     --Compatibility
     DisableDUIInInstance = false,               --Blizzard's gossip, quest and book windows in dungeons and raids (see Core.lua)
 
@@ -126,6 +135,7 @@ local DefaultValues = {
     --LootUIPosition = {x, y}                 --Fixed corner of the Loot UI window (top left, bottom left with Grow Upwards), from the bottom left of the screen
     --QuickSlotPosition = {x, y}               --Center of the Valuable Reward Popup, from the bottom left of the screen
     --QuestItems = {[itemID] = true}          --Items the Quest Item Display has shown
+    --AudioFadeBackup = {[cvar] = volume}      --The player's volumes while lowered, for a session ending without a logout
 };
 
 -- Keys that were renamed to match retail. The old value is moved to the new key once.

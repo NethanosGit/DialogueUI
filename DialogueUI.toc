@@ -1,5 +1,5 @@
 ## Interface: 30300
-## Version: 1.5.3
+## Version: 1.6.0
 ## Title: Dialogue UI
 ## Notes: Quest Dialogue UI (WotLK 3.3.5a port)
 ## Author: Navardraz
@@ -52,6 +52,7 @@ Code\Book\BookItem.lua
 Code\Book\BookUI.lua
 Code\Book\BookEvents.lua
 Code\SpokenSupport.lua
+Code\Utility\AudioFade.lua
 Code\Settings\DropdownMenu.lua
 Code\Settings\Settings.lua
 Code\Widget\MinimapButton.lua

@@ -23,8 +23,26 @@ L["Goodbye"] = GOODBYE or "Au revoir";
 L["UI"] = "Interface";
 L["Control"] = "Commandes";
 L["Gameplay"] = "Jeu";
+L["Audio"] = "Audio";
 L["Minimap"] = "Mini-carte";
 L["Other Addons"] = "Autres addons";
+
+-- Settings: Audio tab
+L["Enable Audio Fading"] = "Activer l'atténuation audio";
+L["Enable Audio Fading Desc"] = "Baisse les volumes du jeu tant que la fenêtre de dialogue ou un texte à lire est ouvert. À la fermeture, ils reviennent progressivement aux volumes réglés dans les options audio du jeu.";
+L["Sound Fade Volume"] = "Volume des effets en lecture";
+L["Sound Fade Volume Desc"] = "Le volume des effets sonores vers lequel baisser pendant la lecture. Un volume déjà plus faible n'est pas augmenté.";
+L["Sound Fade Duration"] = "Durée du fondu des effets";
+L["Sound Fade Duration Desc"] = "Le temps que mettent les effets sonores à baisser, puis à remonter.\n\nPar défaut : 0,5s";
+L["Music Fade Volume"] = "Volume de la musique en lecture";
+L["Music Fade Volume Desc"] = "Le volume de la musique vers lequel baisser pendant la lecture. Un volume déjà plus faible n'est pas augmenté.";
+L["Music Fade Duration"] = "Durée du fondu de la musique";
+L["Music Fade Duration Desc"] = "Le temps que met la musique à baisser, puis à remonter.\n\nPar défaut : 0,5s";
+L["Ambiance Fade Volume"] = "Volume d'ambiance en lecture";
+L["Ambiance Fade Volume Desc"] = "Le volume d'ambiance vers lequel baisser pendant la lecture. Un volume déjà plus faible n'est pas augmenté.";
+L["Ambiance Fade Duration"] = "Durée du fondu d'ambiance";
+L["Ambiance Fade Duration Desc"] = "Le temps que met l'ambiance à baisser, puis à remonter.\n\nPar défaut : 0,5s";
+L["Audio Fade Music Spoken"] = "|cffff8040Spoken joue ses voix sur le canal de la musique, le volume de la musique n'est donc pas modifié.|r";
 
 -- Settings: Other Addons tab
 L["Tooltip"] = "Infobulle";

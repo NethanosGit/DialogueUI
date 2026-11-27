@@ -20,8 +20,26 @@ L["Goodbye"] = GOODBYE or "Auf Wiedersehen";
 L["UI"] = "Benutzerinterface";
 L["Control"] = "Steuerung";
 L["Gameplay"] = "Gameplay";
+L["Audio"] = "Audio";
 L["Minimap"] = "Minikarte";
 L["Other Addons"] = "Andere Addons";
+
+-- Settings: Audio tab
+L["Enable Audio Fading"] = "Audioabblendung aktivieren";
+L["Enable Audio Fading Desc"] = "Senkt die Lautstärken des Spiels, solange das Dialogfenster oder ein lesbarer Text geöffnet ist. Beim Schließen werden sie wieder auf die in den Audiooptionen des Spiels eingestellten Lautstärken eingeblendet.";
+L["Sound Fade Volume"] = "Effektlautstärke beim Lesen";
+L["Sound Fade Volume Desc"] = "Die Lautstärke der Soundeffekte, auf die beim Lesen abgeblendet wird. Eine bereits niedrigere Lautstärke wird nicht angehoben.";
+L["Sound Fade Duration"] = "Effekt-Überblenddauer";
+L["Sound Fade Duration Desc"] = "Wie lange die Soundeffekte zum Abblenden und wieder Einblenden brauchen.\n\nStandard: 0,5s";
+L["Music Fade Volume"] = "Musiklautstärke beim Lesen";
+L["Music Fade Volume Desc"] = "Die Musiklautstärke, auf die beim Lesen abgeblendet wird. Eine bereits niedrigere Lautstärke wird nicht angehoben.";
+L["Music Fade Duration"] = "Musik-Überblenddauer";
+L["Music Fade Duration Desc"] = "Wie lange die Musik zum Abblenden und wieder Einblenden braucht.\n\nStandard: 0,5s";
+L["Ambiance Fade Volume"] = "Umgebungslautstärke beim Lesen";
+L["Ambiance Fade Volume Desc"] = "Die Lautstärke der Umgebungsgeräusche, auf die beim Lesen abgeblendet wird. Eine bereits niedrigere Lautstärke wird nicht angehoben.";
+L["Ambiance Fade Duration"] = "Umgebungs-Überblenddauer";
+L["Ambiance Fade Duration Desc"] = "Wie lange die Umgebungsgeräusche zum Abblenden und wieder Einblenden brauchen.\n\nStandard: 0,5s";
+L["Audio Fade Music Spoken"] = "|cffff8040Spoken spielt seine Stimmen über den Musikkanal ab, daher bleibt die Musiklautstärke unverändert.|r";
 
 -- Settings: Other Addons tab
 L["Tooltip"] = "Tooltip";

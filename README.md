@@ -8,7 +8,7 @@ A port of the retail **Dialogue UI** addon to **World of Warcraft: Wrath of the 
 - Press **F1** while a dialogue is open.
 - Click the **minimap button**.
 
-The settings have five tabs: **UI**, **Control** (including custom key bindings), **Gameplay**, **Minimap** and **Other Addons**.
+The settings have six tabs: **UI**, **Control** (including custom key bindings), **Gameplay**, **Audio**, **Other Addons** and **Experimental**.
 
 **Quest UI - Light Theme**
 
@@ -32,6 +32,7 @@ The settings have five tabs: **UI**, **Control** (including custom key bindings)
 - Adjustable font size and frame size to increase readability.
 - Copy dialogue text, with NPC and item IDs.
 - Display the lore text when you pick up a quest item.
+- Optional **Audio Fading** (off by default, **Audio** tab): lowers the sound, music and ambience volumes while the dialogue window or a readable is open, and fades them back afterwards.
 - Readable objects (books, plaques, notes) in their own window.
 
 ## Details

@@ -20,8 +20,26 @@ L["Goodbye"] = GOODBYE or "再见";
 L["UI"] = "界面";
 L["Control"] = "控制";
 L["Gameplay"] = "游戏功能";
+L["Audio"] = "音频";
 L["Minimap"] = "小地图";
 L["Other Addons"] = "其他插件";
+
+-- Settings: Audio tab
+L["Enable Audio Fading"] = "启用音量淡化";
+L["Enable Audio Fading Desc"] = "对话窗口或可阅读物品打开时降低游戏音量。关闭后，音量会逐渐恢复到游戏声音选项中设置的数值。";
+L["Sound Fade Volume"] = "音效淡化音量";
+L["Sound Fade Volume Desc"] = "阅读时音效逐渐降低到的音量。已经更低的音量不会被调高。";
+L["Sound Fade Duration"] = "音效淡化时间";
+L["Sound Fade Duration Desc"] = "音效降低以及恢复所需的时间。\n\n默认值：0.5s";
+L["Music Fade Volume"] = "音乐淡化音量";
+L["Music Fade Volume Desc"] = "阅读时音乐逐渐降低到的音量。已经更低的音量不会被调高。";
+L["Music Fade Duration"] = "音乐淡化时间";
+L["Music Fade Duration Desc"] = "音乐降低以及恢复所需的时间。\n\n默认值：0.5s";
+L["Ambiance Fade Volume"] = "环境音淡化音量";
+L["Ambiance Fade Volume Desc"] = "阅读时环境音逐渐降低到的音量。已经更低的音量不会被调高。";
+L["Ambiance Fade Duration"] = "环境音淡化时间";
+L["Ambiance Fade Duration Desc"] = "环境音降低以及恢复所需的时间。\n\n默认值：0.5s";
+L["Audio Fade Music Spoken"] = "|cffff8040Spoken 通过音乐声道播放语音，因此音乐音量保持不变。|r";
 
 -- Settings: Other Addons tab
 L["Tooltip"] = "鼠标提示";

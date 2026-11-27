@@ -21,6 +21,7 @@ local Round = API.Round;
 local upper = string.upper;
 local max = math.max;
 local min = math.min;
+local floor = math.floor;
 
 -- Retail values (Settings.lua) at the default font height 12.
 local FRAME_PADDING = 14;
@@ -44,6 +45,7 @@ local TAB_ENTRIES = {
     { name = L["UI"] },
     { name = L["Control"] },
     { name = L["Gameplay"] },
+    { name = L["Audio"] },
     { name = L["Other Addons"] },
     { name = L["Experimental"] },
 };
@@ -56,8 +58,8 @@ local DECOR_MASK_OFFSET = 24;           -- mask edge below the description text
 local DECOR_MASK_ALPHA = 0.875;         -- alpha of the mask's opaque part (0xDF)
 local DECOR_FADE_ROWS = 8 / 128;        -- fade height as a part of the picture (8 of the mask's 128 rows)
 
-local OTHER_ADDONS_TAB = 4;                   -- index in TAB_ENTRIES
-local LOOT_UI_TAB = 5;                        -- index in TAB_ENTRIES
+local OTHER_ADDONS_TAB = 5;                   -- index in TAB_ENTRIES
+local LOOT_UI_TAB = 6;                        -- index in TAB_ENTRIES
 
 local TOGGLE_NAME ="DialogueUI335SettingsToggle";      -- global names so key bindings can click them
 local CLOSE_NAME = "DialogueUI335SettingsClose";
@@ -228,9 +230,7 @@ local function CreateTabButton(parent, tabID, name)
     button.Name:SetPoint("CENTER", button, "CENTER", 0, 0);
     button.Name:SetText(upper(name));
 
-    local width = max(TAB_MIN_WIDTH, Round(button.Name:GetStringWidth() + 2 * FONT_HEIGHT));
-    button:SetWidth(width);
-    button:SetHeight(TAB_HEIGHT);
+    button:SetHeight(TAB_HEIGHT);       -- the width is set by LayoutTabs
 
     button:SetScript("OnEnter", function(self)
         SettingsUI:HighlightButton(self);
@@ -252,6 +252,27 @@ local function CreateTabButton(parent, tabID, name)
     ForwardDrag(button);
 
     return button
+end
+
+-- Each tab is as wide as its text plus padding. When they do not all fit beside the close button (long translations,
+-- wide fonts), the padding and then the minimum width give way.
+local function LayoutTabs(buttons, availableWidth)
+    local gaps = (#buttons - 1) * TAB_BUTTON_GAP;
+    local textWidth = 0;
+    for _, button in ipairs(buttons) do
+        textWidth = textWidth + button.Name:GetStringWidth();
+    end
+    local padding = max(0, min(2 * FONT_HEIGHT, floor((availableWidth - gaps - textWidth) / #buttons)));
+
+    local total = gaps;
+    for _, button in ipairs(buttons) do
+        total = total + max(TAB_MIN_WIDTH, Round(button.Name:GetStringWidth() + padding));
+    end
+    local minWidth = total > availableWidth and 0 or TAB_MIN_WIDTH;
+
+    for _, button in ipairs(buttons) do
+        button:SetWidth(max(minWidth, Round(button.Name:GetStringWidth() + padding)));
+    end
 end
 
 
@@ -596,6 +617,57 @@ local function Font_GetChoiceFile(choice)
     return FontUtil:GetFontFile(choice.dbValue)
 end
 
+-- Audio tab: a volume and a fade duration for each channel (see AudioFade.lua).
+local AudioOptions = {
+    {type = "Checkbox", name = L["Enable Audio Fading"], description = L["Enable Audio Fading Desc"], dbKey = "EnableAudioFading"},
+};
+
+do
+    local volumeChoices, durationChoices = {}, {};
+    for percent = 0, 100, 5 do
+        volumeChoices[#volumeChoices + 1] = {dbValue = percent, valueText = percent .. "%"};
+    end
+    for step = 0, 6 do
+        local seconds = step * 0.5;
+        durationChoices[#durationChoices + 1] = {dbValue = seconds, valueText = seconds .. "s"};
+    end
+
+    local required = {EnableAudioFading = true};
+
+    -- Music: says why it has no effect while Spoken plays its voices through that channel.
+    local function Music_Tooltip(description)
+        return function()
+            if addon.AudioFade:IsMusicUsedBySpoken() then
+                return description .. "\n\n" .. L["Audio Fade Music Spoken"]
+            end
+            return description
+        end
+    end
+
+    local function AddChannel(key, volumeName, volumeDesc, durationName, durationDesc)
+        local dbKey = "AudioFade_" .. key .. "Volume";
+        -- Not chosen yet (-1): the game's own volume, to the nearest step.
+        local function GetShownVolume()
+            local value = GetDBValue(dbKey);
+            if value < 0 then
+                value = 5 * floor(addon.AudioFade:GetPlayerVolume(key) * 20 + 0.5);
+            end
+            return value
+        end
+        local isMusic = (key == "Music");
+        AudioOptions[#AudioOptions + 1] = {type = "ArrowOption", name = volumeName, description = volumeDesc,
+            tooltip = isMusic and Music_Tooltip(volumeDesc) or nil, dbKey = dbKey, getValueFunc = GetShownVolume,
+            choices = volumeChoices, requiredParentValueAnd = required};
+        AudioOptions[#AudioOptions + 1] = {type = "ArrowOption", name = durationName, description = durationDesc,
+            tooltip = isMusic and Music_Tooltip(durationDesc) or nil, dbKey = "AudioFade_" .. key .. "Duration",
+            choices = durationChoices, requiredParentValueAnd = required};
+    end
+
+    AddChannel("Sound", L["Sound Fade Volume"], L["Sound Fade Volume Desc"], L["Sound Fade Duration"], L["Sound Fade Duration Desc"]);
+    AddChannel("Music", L["Music Fade Volume"], L["Music Fade Volume Desc"], L["Music Fade Duration"], L["Music Fade Duration Desc"]);
+    AddChannel("Ambience", L["Ambiance Fade Volume"], L["Ambiance Fade Volume Desc"], L["Ambiance Fade Duration"], L["Ambiance Fade Duration Desc"]);
+end
+
 -- The tabs, in the order of TAB_ENTRIES. Option fields follow retail: type, name, description, dbKey, choices.
 local Schematic = {
     {   -- UI
@@ -742,6 +814,9 @@ local Schematic = {
             {type = "Subheader", name = L["Minimap"], extraWidth = 15},
             {type = "Checkbox", name = L["Show Minimap Button"], description = L["Show Minimap Button Desc"], dbKey = "ShowMinimapButton"},
         },
+    },
+    {   -- Audio
+        options = AudioOptions,
     },
     {   -- Other Addons
         options = {
@@ -1202,8 +1277,9 @@ local function CreateArrowOption(row, optionData)
 
     -- One bar per choice, from the arrow edge to the other arrow edge.
     widget.bars = {};
+    local barGap = numChoices > 12 and 0.5 * ARROWOPTION_BAR_GAP or ARROWOPTION_BAR_GAP;     -- many choices: the bars keep some width
     local barWidth = (ARROWOPTION_WIDTH - 2 * ARROWOPTION_BAR_SHRINK - 2 * ARROW_BUTTON_WIDTH
-        - (numChoices - 1) * ARROWOPTION_BAR_GAP) / numChoices;
+        - (numChoices - 1) * barGap) / numChoices;
     for i = 1, numChoices do
         -- Retail: a 16x4 piece of the sheet (x 0-16, y 124-128), tiled slice with 1 texel margins.
         -- Its own frame, so the bar can be dimmed as a whole.
@@ -1211,7 +1287,7 @@ local function CreateArrowOption(row, optionData)
         bar:SetWidth(barWidth);
         bar:SetHeight(ARROWOPTION_BAR_HEIGHT);
         bar:SetPoint("BOTTOMLEFT", widget, "BOTTOMLEFT",
-            ARROW_BUTTON_WIDTH + ARROWOPTION_BAR_SHRINK + (barWidth + ARROWOPTION_BAR_GAP) * (i - 1), 2);
+            ARROW_BUTTON_WIDTH + ARROWOPTION_BAR_SHRINK + (barWidth + barGap) * (i - 1), 2);
         local slice = NineSlice:CreateTiled(bar, ThemeUtil:GetTextureFile(ARROW_FILE), { 16, 4 }, 1, BACKGROUND_SCALE,
             "OVERLAY", { 0, 124, 128, 128 });
         slice:Update(barWidth, ARROWOPTION_BAR_HEIGHT);
@@ -1251,7 +1327,12 @@ local function CreateArrowOption(row, optionData)
 
     -- Shows the saved value.
     function widget:Refresh()
-        local value = GetDBValue(self.dbKey);
+        local value;
+        if optionData.getValueFunc then
+            value = optionData.getValueFunc();      -- what is shown differs from what is saved
+        else
+            value = GetDBValue(self.dbKey);
+        end
         local id = 1;
         for i, choice in ipairs(self.choices) do
             if choice.dbValue == value then
@@ -1949,6 +2030,8 @@ local function CreateSettingsFrame()
         end
         f.tabButtons[i] = button;
     end
+    f.tabAreaWidth = frameWidth - 2 * FRAME_PADDING - TAB_MIN_WIDTH - TAB_BUTTON_GAP;      -- left of the close button
+    LayoutTabs(f.tabButtons, f.tabAreaWidth);
 
     -- Line under the header.
     f.headerDivider = CreateDivider(content, "Settings-Divider-H.blp", false);
@@ -2276,9 +2359,7 @@ CallbackRegistry:Register("FontChanged", function()
     if not frame or not frame.tabButtons then
         return
     end
-    for _, button in ipairs(frame.tabButtons) do
-        button:SetWidth(max(TAB_MIN_WIDTH, Round(button.Name:GetStringWidth() + 2 * FONT_HEIGHT)));
-    end
+    LayoutTabs(frame.tabButtons, frame.tabAreaWidth);
     local selected = frame.tabButtons[frame.tabID];
     if selected then
         frame.selection:Update(selected:GetWidth(), selected:GetHeight());

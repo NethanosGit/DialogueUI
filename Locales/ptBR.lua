@@ -20,8 +20,26 @@ L["Goodbye"] = GOODBYE or "Até logo";
 L["UI"] = "Interface";
 L["Control"] = "Controle";
 L["Gameplay"] = "Jogabilidade";
+L["Audio"] = "Áudio";
 L["Minimap"] = "Minimapa";
 L["Other Addons"] = "Outros addons";
+
+-- Settings: Audio tab
+L["Enable Audio Fading"] = "Ativar atenuação de áudio";
+L["Enable Audio Fading Desc"] = "Reduz os volumes do jogo enquanto a janela de diálogo ou um texto legível está aberto. Ao fechar, eles voltam gradualmente aos volumes definidos nas opções de áudio do jogo.";
+L["Sound Fade Volume"] = "Volume dos efeitos na leitura";
+L["Sound Fade Volume Desc"] = "O volume dos efeitos sonoros para o qual atenuar durante a leitura. Um volume que já está mais baixo não é aumentado.";
+L["Sound Fade Duration"] = "Duração da atenuação dos efeitos";
+L["Sound Fade Duration Desc"] = "Quanto tempo os efeitos sonoros levam para baixar e voltar a subir.\n\nPadrão: 0,5s";
+L["Music Fade Volume"] = "Volume da música na leitura";
+L["Music Fade Volume Desc"] = "O volume da música para o qual atenuar durante a leitura. Um volume que já está mais baixo não é aumentado.";
+L["Music Fade Duration"] = "Duração da atenuação da música";
+L["Music Fade Duration Desc"] = "Quanto tempo a música leva para baixar e voltar a subir.\n\nPadrão: 0,5s";
+L["Ambiance Fade Volume"] = "Volume do ambiente na leitura";
+L["Ambiance Fade Volume Desc"] = "O volume do ambiente para o qual atenuar durante a leitura. Um volume que já está mais baixo não é aumentado.";
+L["Ambiance Fade Duration"] = "Duração da atenuação do ambiente";
+L["Ambiance Fade Duration Desc"] = "Quanto tempo o som ambiente leva para baixar e voltar a subir.\n\nPadrão: 0,5s";
+L["Audio Fade Music Spoken"] = "|cffff8040O Spoken reproduz suas vozes no canal de música, por isso o volume da música não é alterado.|r";
 
 -- Settings: Other Addons tab
 L["Tooltip"] = "Dica de item";

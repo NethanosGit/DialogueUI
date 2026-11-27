@@ -20,8 +20,26 @@ L["Goodbye"] = GOODBYE or "잘가요.";
 L["UI"] = "UI";
 L["Control"] = "입력설정";
 L["Gameplay"] = "게임플레이";
+L["Audio"] = "오디오";
 L["Minimap"] = "미니맵";
 L["Other Addons"] = "기타 애드온";
+
+-- Settings: Audio tab
+L["Enable Audio Fading"] = "오디오 페이드 사용";
+L["Enable Audio Fading Desc"] = "대화 창이나 읽을거리가 열려 있는 동안 게임 음량을 낮춥니다. 창을 닫으면 게임의 소리 설정에서 정한 음량으로 서서히 되돌아옵니다.";
+L["Sound Fade Volume"] = "효과음 페이드 음량";
+L["Sound Fade Volume Desc"] = "읽는 동안 낮출 효과음 음량입니다. 이미 더 낮은 음량은 높이지 않습니다.";
+L["Sound Fade Duration"] = "효과음 페이드 시간";
+L["Sound Fade Duration Desc"] = "효과음이 작아지고 다시 커지는 데 걸리는 시간입니다.\n\n기본값: 0.5s";
+L["Music Fade Volume"] = "음악 페이드 음량";
+L["Music Fade Volume Desc"] = "읽는 동안 낮출 음악 음량입니다. 이미 더 낮은 음량은 높이지 않습니다.";
+L["Music Fade Duration"] = "음악 페이드 시간";
+L["Music Fade Duration Desc"] = "음악이 작아지고 다시 커지는 데 걸리는 시간입니다.\n\n기본값: 0.5s";
+L["Ambiance Fade Volume"] = "환경 소리 페이드 음량";
+L["Ambiance Fade Volume Desc"] = "읽는 동안 낮출 환경 소리 음량입니다. 이미 더 낮은 음량은 높이지 않습니다.";
+L["Ambiance Fade Duration"] = "환경 소리 페이드 시간";
+L["Ambiance Fade Duration Desc"] = "환경 소리가 작아지고 다시 커지는 데 걸리는 시간입니다.\n\n기본값: 0.5s";
+L["Audio Fade Music Spoken"] = "|cffff8040Spoken이 음악 채널로 음성을 재생하므로 음악 음량은 변경하지 않습니다.|r";
 
 -- Settings: Other Addons tab
 L["Tooltip"] = "툴팁";

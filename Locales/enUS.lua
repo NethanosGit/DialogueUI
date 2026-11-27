@@ -21,9 +21,27 @@ L["Goodbye"] = GOODBYE or "Goodbye";
 L["UI"] = "UI";
 L["Control"] = "Control";
 L["Gameplay"] = "Gameplay";
+L["Audio"] = "Audio";
 L["Minimap"] = "Minimap";
 L["Other Addons"] = "Other Addons";
 L["Experimental"] = "Experimental";
+
+-- Settings: Audio tab
+L["Enable Audio Fading"] = "Enable Audio Fading";
+L["Enable Audio Fading Desc"] = "Lower the game's volumes while the dialogue window or a readable is open. When it closes, they fade back to the volumes set in the game's audio options.";
+L["Sound Fade Volume"] = "Sound Fade Volume";
+L["Sound Fade Volume Desc"] = "The sound effects volume to fade to while reading. A volume that is already lower is not raised.";
+L["Sound Fade Duration"] = "Sound Fade Duration";
+L["Sound Fade Duration Desc"] = "How long the sound effects take to fade down, and back up again.\n\nDefault: 0.5s";
+L["Music Fade Volume"] = "Music Fade Volume";
+L["Music Fade Volume Desc"] = "The music volume to fade to while reading. A volume that is already lower is not raised.";
+L["Music Fade Duration"] = "Music Fade Duration";
+L["Music Fade Duration Desc"] = "How long the music takes to fade down, and back up again.\n\nDefault: 0.5s";
+L["Ambiance Fade Volume"] = "Ambiance Fade Volume";
+L["Ambiance Fade Volume Desc"] = "The ambience volume to fade to while reading. A volume that is already lower is not raised.";
+L["Ambiance Fade Duration"] = "Ambiance Fade Duration";
+L["Ambiance Fade Duration Desc"] = "How long the ambience takes to fade down, and back up again.\n\nDefault: 0.5s";
+L["Audio Fade Music Spoken"] = "|cffff8040Spoken plays its voices on the music channel, so the music volume is left unchanged.|r";
 
 -- Settings: Other Addons tab
 L["Tooltip"] = "Tooltip";
