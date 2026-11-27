@@ -1,4 +1,4 @@
-local VERSION_TEXT = "1.6.0";
+local VERSION_TEXT = "1.7.0";
 
 
 local addonName, addon = ...;
@@ -98,7 +98,7 @@ local DefaultValues = {
     --Other addons (see Code\SupportedAddOns)
     ShowAuctionHouseTooltip = true,             --Auction prices in the item tooltip. Not in retail. On because Auctionator prices were always shown
     ShowAuctionatorTooltip = true,              --Auctionator prices (needs ShowAuctionHouseTooltip). On: they were always shown
-    ShowJournalGearTooltip = true,              --"On your gear list" line from Journal: Gear (JournalGearBIS). On: it was always shown
+    ShowJournalGearTooltip = true,              --"On your gear list" line from Journal: Gear Guide (JournalGearGuide). On: it was always shown
     ShowRetailAHTooltip = false,                --AH bot prices of mod-retail-ah (needs ShowAuctionHouseTooltip)
 
     --Loot UI (see Code\Loot). A port of the Loot UI of the Plumber addon (retail)

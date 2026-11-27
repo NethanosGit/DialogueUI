@@ -367,8 +367,9 @@ local function LootUIPosition_Validation()
     return addon.LootUI.MainFrame:IsUsingCustomPosition()
 end
 
--- Valuable Reward Popup: Move shows a sample popup to drag, Reset puts it back. Needs Pawn like the upgrade arrow,
--- so without it the checkbox is greyed out (UpgradeArrow_* below) and the rows under it stay hidden.
+-- Valuable Reward Popup: Move shows a sample popup to drag, Reset puts it back. Needs Pawn (or Journal: Gear Guide)
+-- like the upgrade arrow, so without either the checkbox is greyed out (UpgradeArrow_* below) and the rows under it
+-- stay hidden.
 local function QuickSlot_Move_OnClick()
     addon.QuickSlot:ToggleEditMode();
 end
@@ -382,11 +383,11 @@ local function QuickSlot_Reset_OnClick()
 end
 
 local function QuickSlot_Move_Validation()
-    return addon.TooltipCompare:IsPawnAvailable()
+    return addon.TooltipCompare:HasUpgradeSource()
 end
 
 local function QuickSlotPosition_Validation()
-    return addon.TooltipCompare:IsPawnAvailable() and addon.QuickSlot:IsUsingCustomPosition()
+    return addon.TooltipCompare:HasUpgradeSource() and addon.QuickSlot:IsUsingCustomPosition()
 end
 
 -- Press Button To Use: names the Confirm key the player has now.
@@ -444,21 +445,22 @@ local UPGRADE_ARROW_ICON = "|TInterface\\AddOns\\DialogueUI\\Textures\\Shared\\U
 local PAWN_URL = "https://warperia.com/addon-wotlk/pawn/download/";
 local function QuickSlot_Tooltip()
     local text = L["Valuable Reward Popup Desc"];
-    if not addon.TooltipCompare:IsPawnAvailable() then
+    if not addon.TooltipCompare:HasUpgradeSource() then
         text = text .. "\n\n" .. L["Show Upgrade Arrow Pawn Missing"]:format(PAWN_URL);
     end
     return text
 end
 local function UpgradeArrow_Tooltip()
     local text = L["Show Upgrade Arrow Desc"]:format(UPGRADE_ARROW_ICON);
-    if not addon.TooltipCompare:IsPawnAvailable() then
+    if not addon.TooltipCompare:HasUpgradeSource() then
         text = text .. "\n\n" .. L["Show Upgrade Arrow Pawn Missing"]:format(PAWN_URL);
     end
     return text
 end
--- Without Pawn the checkbox is greyed out; clicking it opens the Clipboard window with the download link.
+-- Without Pawn (or Journal: Gear Guide) the checkbox is greyed out; clicking it opens the Clipboard window with
+-- Pawn's download link.
 local function UpgradeArrow_IsDisabled()
-    return not addon.TooltipCompare:IsPawnAvailable()
+    return not addon.TooltipCompare:HasUpgradeSource()
 end
 local function UpgradeArrow_DisabledClick()
     addon.Clipboard:ShowContent(PAWN_URL, nil, true, 360, 40);
@@ -494,9 +496,9 @@ local function Spoken_IsDisabled()
     return not (addon.IsSupportedAddOnActive("Spoken") and _G.DialogueUI_SpokenBridge)
 end
 -- Greyed out and unchecked while the addon is not running (the saved choice is kept for when it is).
--- Journal: Gear is not released yet, so its row only exists for those who have it.
+-- Journal: Gear Guide is not released yet, so its row only exists for those who have it.
 local function JournalGear_IsAvailable()
-    return addon.IsSupportedAddOnActive("JournalGearBIS")
+    return addon.IsSupportedAddOnActive("JournalGearGuide")
 end
 local function Auctionator_IsDisabled()
     return not addon.IsSupportedAddOnActive("Auctionator")
@@ -826,7 +828,7 @@ local Schematic = {
                 dbKey = "ShowAuctionatorTooltip", isDisabledFunc = Auctionator_IsDisabled, requiredParentValueAnd = {ShowAuctionHouseTooltip = true}},
             {type = "Checkbox", name = "Retail Auction House", description = L["Auction House RetailAH Desc"], tooltip = RetailAH_Tooltip,
                 dbKey = "ShowRetailAHTooltip", isDisabledFunc = RetailAH_IsDisabled, requiredParentValueAnd = {ShowAuctionHouseTooltip = true}},
-            {type = "Checkbox", name = "Journal: Gear", description = L["Journal Gear Desc"],
+            {type = "Checkbox", name = "Journal: Gear Guide", description = L["Journal Gear Desc"],
                 validationFunc = JournalGear_IsAvailable, dbKey = "ShowJournalGearTooltip"},
             {type = "Checkbox", name = L["Show Transmog Status"], description = L["Show Transmog Status Desc"], tooltip = TransmogStatus_Tooltip, isDisabledFunc = TransmogStatus_IsDisabled, dbKey = "ShowTransmogStatus", preview = "Transmog", ratio = 511 / 484},     -- picture is 511 x 484 stretched to 512 x 512,
             {type = "Checkbox", name = L["Use Transmog Plus"], description = L["Use Transmog Plus Desc"], tooltip = TransmogPlus_Tooltip, dbKey = "UseTransmogPlus",

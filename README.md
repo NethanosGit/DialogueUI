@@ -60,8 +60,8 @@ When you must choose a reward, the item that sells for the most is marked.
 
 ![Highest sell price](Preview/MarkHighestSellPrice.png)
 
-### Upgrade arrow and Valuable Reward Popup (needs Pawn)
-With the [Pawn](https://www.curseforge.com/wow/addons/pawn) addon installed, reward items that are upgrades for your character get a green arrow. A popup lets you equip such an item directly after turning in the quest.
+### Upgrade arrow and Valuable Reward Popup (needs Pawn or Journal: Gear Guide)
+With the [Pawn](https://www.curseforge.com/wow/addons/pawn) addon or Journal: Gear Guide installed, reward items that are upgrades for your character get a green arrow. A popup lets you equip such an item directly after turning in the quest. With Journal: Gear Guide, its gear list decides for the gear it knows, and Pawn decides for the rest.
 
 ![Valuable reward popup](Preview/QuickSlotQuestReward.png)
 
@@ -94,7 +94,7 @@ Books, notes and other readable objects open in their own window. Choose its siz
 
 - **Auctionator**
 - **Retail Auction House** (mod-retail-ah): AH bot prices in the item tooltip. Choose Auctionator or Retail Auction House under **Other Addons**.
-- **Journal: Gear (JournalGearBIS)**: "On your gear list" line in the item tooltip
+- **Journal: Gear Guide (JournalGearGuide)**: "On your gear list" line in the item tooltip, and its upgrade arrow on reward items
 - **[Spoken](https://github.com/PatchFoundry335/spoken-wow)** (the voice player, the 3.3.5 version is available there): Spoken's **Play** and **Skip** buttons on the quest and gossip window and on the book view. Spoken draws its buttons in the game's UI, which DialogueUI hides, so a few changed files have to be copied into the Spoken folders (steps below).
 
 To switch on the Spoken support:
@@ -127,4 +127,4 @@ Play on a quest or gossip page needs Spoken Quests, and Play on a book needs Spo
 
 - Built for client **3.3.5a** (Interface 30300) only.
 - This is a direct port of [Dialogue UI (YUI-Dialogue)](https://github.com/Peterodox/YUI-Dialogue) by Peterodox. All credit for the design and the original addon goes to them, and many thanks for making it. Some retail features (such as Auto Complete Quest and the Gossip options group) are not included because they do not apply to 3.3.5a.
-- Pawn is optional and only needed for the upgrade arrow and the Valuable Reward Popup.
+- Pawn and Journal: Gear Guide are optional. The upgrade arrow and the Valuable Reward Popup need at least one of them.

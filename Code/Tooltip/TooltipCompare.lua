@@ -118,6 +118,45 @@ function TooltipCompare:IsPawnAvailable()
         and type(PawnCommon) == "table" and type(PawnCommon.Scales) == "table"
 end
 
+-- Journal: Gear Guide marks upgrades on your gear list (from level 55, for gear it knows) and draws the same
+-- arrow. Where its list can judge an item its answer counts, otherwise Pawn's. Its globals: JournalGearGuide.Knows(link)
+-- and JournalGearGuide.ShowsArrow(link, carried) (carried: the item is in your bags, so is it better than what you
+-- wear?).
+local function GearGuide()
+    local G = _G.JournalGearGuide;
+    if type(G) == "table" and type(G.Knows) == "function" and type(G.ShowsArrow) == "function" then
+        return G
+    end
+end
+
+local gearGuideErrorReported = false;
+
+-- Gear Guide's verdict, or nil when its list cannot judge the item. Its errors are caught so they cannot break the
+-- reward window or the popup: reported once, and the item is left to Pawn.
+local function AskGearGuide(link, carried)
+    local G = GearGuide();
+    if not G then
+        return nil
+    end
+    local ok, result = pcall(function()
+        if G.Knows(link) then
+            return G.ShowsArrow(link, carried) and true or false
+        end
+    end);
+    if ok then
+        return result
+    end
+    if not gearGuideErrorReported then
+        gearGuideErrorReported = true;
+        geterrorhandler()("DialogueUI: Journal: Gear Guide failed: " .. tostring(result));
+    end
+end
+
+-- Pawn or Journal: Gear Guide: either can say what is an upgrade.
+function TooltipCompare:HasUpgradeSource()
+    return self:IsPawnAvailable() or GearGuide() ~= nil
+end
+
 local function PawnValues(item)
     local values = {};
     if item and item.Values then
@@ -144,8 +183,13 @@ end
 -- Returns isUpgrade, isReady (false while an item is not in the cache yet: ask again later).
 -- An empty slot counts as an upgrade, except the second slot of a one-hand weapon (its second slot only counts when
 -- it holds a weapon). Armor of another type than the equipped one (cloth over leather) is never an upgrade.
--- Without Pawn nothing is an upgrade.
-function TooltipCompare:IsUpgrade(link)
+-- Without Pawn nothing is an upgrade. Journal: Gear Guide comes first, for the items its list can judge.
+-- carried: the item is already in the bags (the reward just received).
+function TooltipCompare:IsUpgrade(link, carried)
+    local verdict = AskGearGuide(link, carried);
+    if verdict ~= nil then
+        return verdict, true
+    end
     local slots, equipSlot = GetEquipSlots(link);
     if not slots or not self:IsPawnAvailable() then
         return false, true

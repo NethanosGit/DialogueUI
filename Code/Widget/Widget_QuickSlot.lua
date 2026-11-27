@@ -2,7 +2,7 @@ local _, addon = ...;
 
 -- Valuable Reward Popup. Port of retail's Widget_QuickSlot.lua (equipment only).
 -- After a quest is turned in, the loot messages are watched for a few seconds. When one of the player's own new items
--- is an upgrade according to Pawn (TooltipCompare:IsUpgrade), a small popup offers to equip it.
+-- is an upgrade according to Pawn or Journal: Gear Guide (TooltipCompare:IsUpgrade), a small popup offers to equip it.
 -- Differences from retail:
 --   * only equipment: no chests / cosmetics / mounts / pets / toys / decor. A chest needs a secure button to open;
 --   * equipping is a plain EquipItemByName (not protected), so it does not work in combat (the button is greyed out);
@@ -648,7 +648,7 @@ function QuickSlot:EvaluateItem(link, isRetry)
     if self.inCutscene or not GetDBBool("QuickSlotQuestReward") then return end;
     if not TooltipCompare:IsEquippable(link) then return end;
 
-    local isUpgrade, isReady = TooltipCompare:IsUpgrade(link);
+    local isUpgrade, isReady = TooltipCompare:IsUpgrade(link, true);
     if not isReady then
         -- The item data is not in the cache yet. The call above asked for it: look again shortly.
         if not isRetry then
