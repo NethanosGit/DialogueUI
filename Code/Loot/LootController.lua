@@ -288,25 +288,63 @@ end
 
 local LISTEN_AFTER_CLOSE = 1.5;
 
+-- Item messages are needed while looting, and after a quest reward was taken.
+function EL:IsListeningItemMessage()
+    return self.dynamicRegistered or self.questListening
+end
+
+function EL:RefreshItemListening()
+    if self:IsListeningItemMessage() then
+        self:RegisterEvent("CHAT_MSG_LOOT");
+    else
+        self:UnregisterEvent("CHAT_MSG_LOOT");
+    end
+end
+
 function EL:ListenDynamicEvents(state)
     if state and not self.dynamicRegistered then
         self.dynamicRegistered = true;
-        self:RegisterEvent("CHAT_MSG_LOOT");
+        self:RefreshItemListening();
         self:RefreshExtraListening();
     elseif not state and self.dynamicRegistered then
         self.dynamicRegistered = nil;
-        self:UnregisterEvent("CHAT_MSG_LOOT");
+        self:RefreshItemListening();
         self:RefreshExtraListening();
     end
 end
+
+-- Quest rewards come without a loot window. Only the item messages: money follows "Show Any Money Changes".
+local LISTEN_AFTER_QUEST = 3;
+local questToken = 0;
+
+function EL:ListenQuestReward()
+    if not enabled then
+        return
+    end
+    questToken = questToken + 1;
+    local token = questToken;
+    self.questListening = true;
+    self:RefreshItemListening();
+    After(LISTEN_AFTER_QUEST, function()
+        if token == questToken then
+            EL.questListening = nil;
+            EL:RefreshItemListening();
+        end
+    end);
+end
+
+-- FooterButtons.lua: the player took the reward.
+CallbackRegistry:Register("TriggerQuestFinished", function()
+    EL:ListenQuestReward();
+end);
 
 ---------------------------------------------------------------------------
 -- Show Any Money / Currency Changes
 -- Money: PLAYER_MONEY all the time (not only around looting); every gain is a row. Currency: 3.3.5a has honor and
 -- arena points (GetHonorCurrency / GetArenaCurrency, not hidden by a collapsed category) and item currencies in the
 -- currency list (Emblems ...; only the expanded categories are listed, so only currencies seen in both snapshots count).
--- There is no CHAT_MSG_CURRENCY: item currencies come as items through CHAT_MSG_LOOT while that is listened to, and
--- through the currency list otherwise. Only gains are shown.
+-- There is no CHAT_MSG_CURRENCY: item currencies come as items through CHAT_MSG_LOOT while that is listened to (see
+-- IsListeningItemMessage), and through the currency list otherwise. Only gains are shown.
 ---------------------------------------------------------------------------
 
 -- Show Reputation Changes: CHAT_MSG_COMBAT_FACTION_CHANGE, "Reputation with %s increased by %d." Only increases with
@@ -369,7 +407,7 @@ function EL:OnCurrencyUpdate()
         local before = old[id];
         local delta = before and (current.count - before.count) or 0;
         -- An item currency is a row of its own already while the chat messages of loot are listened to.
-        if delta > 0 and not (current.item and self.dynamicRegistered) then
+        if delta > 0 and not (current.item and self:IsListeningItemMessage()) then
             local quality = 1;
             if current.item then
                 quality = select(3, GetItemInfo(id)) or 1;
@@ -619,6 +657,7 @@ local function Apply()
     else
         EL:UnregisterAllEvents();
         EL.dynamicRegistered = nil;
+        EL.questListening = nil;
         EL.playerMoney = nil;
         EL.currencySnapshot = nil;
         EL.lootOpened = nil;
