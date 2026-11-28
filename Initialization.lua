@@ -1,4 +1,4 @@
-local VERSION_TEXT = "1.7.1";
+local VERSION_TEXT = "1.7.2";
 
 
 local addonName, addon = ...;

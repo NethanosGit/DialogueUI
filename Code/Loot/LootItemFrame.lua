@@ -610,7 +610,7 @@ end
 function ItemFrame:AnimateMoney(fromCopper, toCopper)
     local driver = self.moneyDriver;
     local t = 0;
-    local duration = 0.4;
+    local duration = 0.2;
     driver:SetScript("OnUpdate", function(_, elapsed)
         t = t + elapsed;
         local p = min(1, t / duration);
